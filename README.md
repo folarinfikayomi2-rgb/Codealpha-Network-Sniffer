@@ -31,8 +31,7 @@ It also supports protocol filtering and saves captured packet information to a t
 ├── captured_packets.txt
 ├── requirements.txt
 ├── README.md
-├── screenshots/
-└── .venv/
+
 
 Installation
 
