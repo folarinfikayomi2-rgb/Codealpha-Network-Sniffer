@@ -1,0 +1,43 @@
+
+name: Network Sniffer CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test and Security Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install scapy pytest ruff bandit pip-audit
+
+      - name: Run tests
+        run: python -m pytest -v
+
+      - name: Check code quality
+        run: python -m ruff check .
+
+      - name: Scan for security issues
+        run: python -m bandit -r . -x ./tests
+
+      - name: Audit dependencies
+        run: python -m pip_audit
